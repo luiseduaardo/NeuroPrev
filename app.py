@@ -69,8 +69,8 @@ st.divider()
 
 @st.cache_resource
 def load_model():
-    if os.path.exists('weights/modelo_avc_final.pkl'):
-        return joblib.load('weights/modelo_avc_final.pkl')
+    if os.path.exists('weights/xgb_model.pkl'):
+        return joblib.load('weights/xgb_model.pkl')
     else:
         st.error("O arquivo do modelo não foi encontrado.")
         return None
