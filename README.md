@@ -1,4 +1,4 @@
-# 🧠 NeuroPrev
+#  NeuroPrev
 
 ### Triagem Inteligente para Acidente Vascular Cerebral (AVC)
 
@@ -7,7 +7,7 @@ O projeto surgiu da necessidade de **otimizar o fluxo clínico** e **reduzir o t
 
 ---
 
-## 📌 O Problema
+##  O Problema
 
 O AVC é a **2ª maior causa de morte no mundo** e apresenta desafios relevantes no cenário atual da saúde:
 
@@ -22,11 +22,11 @@ O AVC é a **2ª maior causa de morte no mundo** e apresenta desafios relevantes
 
 ---
 
-## 🚀 A Solução
+##  A Solução
 
 O **NeuroPrev** atua como um **Sistema de Apoio à Decisão Clínica**, utilizando **Machine Learning** para identificar pacientes com maior risco de AVC e **priorizar o atendimento**.
 
-### 🔍 Funcionalidades Principais
+###  Funcionalidades Principais
 
 * **Identificação de Riscos**
   Análise de fatores como:
@@ -43,29 +43,27 @@ O **NeuroPrev** atua como um **Sistema de Apoio à Decisão Clínica**, utilizan
 
 ---
 
-## 📊 Performance do Modelo (XGBoost)
+##  Performance do Modelo
 
-O modelo adotado foi o **XGBoost (Extreme Gradient Boosting)**, que utiliza **árvores de decisão sequenciais**, onde cada nova árvore corrige os erros das anteriores.
-Esse algoritmo é especialmente indicado para **bases de dados desbalanceadas**, como no cenário de AVC (**~95% sem AVC vs ~5% com risco**).
+###  Relatório de Classificação (XGBoost + Optuna)
 
-### 📈 Relatório de Classificação
+| Classe | Precisão | Recall | F1-Score | Suporte |
+|------|---------|--------|----------|---------|
+| 0 (Sem AVC) | 0.99 | 0.53 | 0.69 | 972 |
+| 1 (Risco de AVC) | 0.09 | 0.94 | 0.17 | 50 |
 
-| Classe           | Precisão | Recall (Sensibilidade) | F1-Score | Suporte |
-| ---------------- | -------- | ---------------------- | -------- | ------- |
-| 0 (Sem AVC)      | 0.99     | 0.62                   | 0.76     | 971     |
-| 1 (Risco de AVC) | 0.11     | 0.86                   | 0.19     | 51      |
+- **Acurácia Geral:** 0.55  
+- **Total de Amostras:** 1022  
 
-**Acurácia Geral:** **0.63**
-**Total de amostras:** **1022**
+###  Nota Técnica
 
-### 📝 Nota Técnica
+O modelo otimizado com **Optuna** prioriza a **sensibilidade da classe de risco**, atingindo **Recall = 0.94** para pacientes com risco de AVC.  
+Essa configuração reduz significativamente **falsos negativos**, característica essencial em sistemas de **triagem médica**, mesmo com impacto na precisão global.
 
-O modelo foi **otimizado para maximizar o Recall da classe positiva (0.86)**, priorizando a identificação de pacientes com risco real de AVC.
-Em aplicações médicas de **triagem**, reduzir **falsos negativos** é mais importante do que maximizar a precisão, justificando a maior taxa de falsos positivos.
 
 ---
 
-## 📦 Pesos do Modelo
+##  Pesos do Modelo
 
 Os pesos do modelo treinado estão disponíveis no diretório:
 
@@ -74,60 +72,38 @@ weights/
 └── xgb_model.pkl
 ```
 
-O modelo foi salvo utilizando `OPTUNA`.
-
-📌 **Observação**
-Os pesos já estão incluídos no projeto. Não é necessário retreinar o modelo para executar a inferência ou utilizar o aplicativo.
-
----
-
-## ⚙️ Configurações do Modelo
+O modelo foi salvo com os pesos do hiperparametros do  `OPTUNA`.
 
 * **Threshold de decisão:** 0.4
 * **Tratamento de IMC ausente:** mediana (28.0)
 * **Codificação:** One-Hot Encoding
 
----
+estão disponíveis no diretório:
 
-## ▶️ Instalação do Ambiente
+weights/
+└── xgb_artefatos.jason
 
-### Pré-requisitos
 
-* Python 3.9+
-* Pip
-* Virtualenv (opcional)
-
-###  Clone o repositório
-
-```bash
-git clone https://github.com/seu-usuario/neuroprev.git
-cd neuroprev
-```
+ **Observação**
+Os pesos já estão incluídos no projeto. Não é necessário retreinar o modelo para executar a inferência ou utilizar o aplicativo.
 
 
 
-###  Instale as dependências
+## Execução dos Notebooks
 
-```bash
-pip install pandas scikit-learn xgboost joblib streamlit jupyter
-```
+O projeto já possui o **modelo treinado**, sendo necessário **apenas executar a inferência**.
 
----
+### Notebooks Disponíveis
 
-## 📓 Execução dos Notebooks
+- `analise.ipynb` → Análise exploratória dos dados (EDA) *(referencial)*  
+- `treinamento.ipynb` → Treinamento e avaliação do modelo *(documental)*  
+- `inferência.ipynb` → **Inferência com novos dados (uso obrigatório)**  
 
-* `analise.ipynb` → Análise exploratória dos dados (EDA)
-* `treinamento.ipynb` → Treinamento e avaliação do modelo
-* `inferência.ipynb` → Testes de predição com novos dados
+ **Importante:**  
+Para utilizar o NeuroPrev **não é necessário rodar os notebooks de análise ou treinamento**.  
+O uso prático do sistema requer **somente o notebook `inferência.ipynb`**.
 
-
-```bash
-jupyter notebook
-```
-
----
-
-## 🖥️ Execução do Aplicativo (Streamlit)
+##  Execução do Aplicativo (Streamlit)
 
 ```bash
 streamlit run app.py
@@ -147,7 +123,7 @@ http://localhost:8501
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 * **Linguagem:** Python
 * **Machine Learning:** XGBoost
@@ -157,7 +133,7 @@ http://localhost:8501
 
 ---
 
-## 👥 Equipe
+##  Equipe
 
 * **Alice Barbosa** — Documentação técnica, treinamento e otimização
 * **Felipe Almeida** — Documentação técnica, treinamento e otimização
@@ -167,7 +143,7 @@ http://localhost:8501
 
 ---
 
-## ⚠️ Aviso Importante
+##  Aviso Importante
 O **NeuroPrev** é uma ferramenta de apoio à decisão clínica e **não substitui diagnóstico médico**.
 Os resultados devem ser interpretados por **profissionais de saúde qualificados**.
 O **NeuroPrev** é uma ferramenta de apoio à decisão clínica e **não substitui diagnóstico médico**.
