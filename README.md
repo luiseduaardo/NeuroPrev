@@ -138,7 +138,7 @@ http://localhost:8501
 * **Alice Barbosa** — Documentação técnica, treinamento e otimização
 * **Felipe Almeida** — Documentação técnica, treinamento e otimização
 * **Luís Eduardo** — Desenvolvimento do Data App e treinamento dos modelos
-* **Mairon Nunes** — Documentação técnica e treinamento dos modelos preditivos
+* **Mairon Nunes** — ReadMe
 * **Roni Oliveira** — Documentação técnica, treinamento e otimização
 
 ---
