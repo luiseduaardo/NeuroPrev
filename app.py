@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+import joblib
+import os
 
 st.set_page_config(page_title="NeuroPrev", page_icon="🧠")
 
@@ -63,4 +66,63 @@ smoking_status = st.selectbox("Tabagismo", list(smoking_map.keys()))
 
 # calculate button
 st.divider()
+
+@st.cache_resource
+def load_model():
+    if os.path.exists('weights/modelo_avc_final.pkl'):
+        return joblib.load('weights/modelo_avc_final.pkl')
+    else:
+        st.error("O arquivo do modelo não foi encontrado.")
+        return None
+    
+model = load_model()
+
+expected_columns = [
+    'age', 'hypertension', 'heart_disease', 'avg_glucose_level', 'bmi',
+    'gender_Female', 'gender_Male', 'gender_Other',
+    'ever_married_No', 'ever_married_Yes',
+    'work_type_Govt_job', 'work_type_Never_worked', 'work_type_Private',
+    'work_type_Self-employed', 'work_type_children',
+    'Residence_type_Rural', 'Residence_type_Urban',
+    'smoking_status_Unknown', 'smoking_status_formerly smoked',
+    'smoking_status_never smoked', 'smoking_status_smokes'
+]
+
 submit_btn = st.button("Calcular Risco de AVC", use_container_width=True)
+
+if submit_btn and model:
+    input_data = {col: 0 for col in expected_columns}
+
+    # numeric data
+    input_data['age'] = age
+    input_data['hypertension'] = hypertension_map[hypertension]
+    input_data['heart_disease'] = heart_disease_map[heart_disease]
+    input_data['avg_glucose_level'] = avg_glucose_level
+    input_data['bmi'] = bmi
+
+    # non numeric data
+    input_data[f"gender_{gender_map[gender]}"] = 1
+    input_data[f"ever_married_{married_map[ever_married]}"] = 1
+    input_data[f"work_type_{work_type_map[work_type]}"] = 1
+    input_data[f"Residence_type_{residence_map[residence_type]}"] = 1
+    input_data[f"smoking_status_{smoking_map[smoking_status]}"] = 1
+
+    df_input = pd.DataFrame([input_data])
+    df_input = df_input[expected_columns]
+
+    try:
+        prediction = model.predict(df_input)[0]
+        probability = model.predict_proba(df_input)[0][1]
+
+        st.subheader("Resultado da Análise:")
+        
+        if prediction == 1:
+            st.error(f"⚠️ Alto risco de AVC detectado.")
+            st.write(f"O modelo estima uma probabilidade de **{probability:.1%}**.")
+            st.warning("Recomendação: Procure um médico para uma avaliação detalhada.")
+        else:
+            st.success(f"✅ Baixo risco de AVC detectado.")
+            st.write(f"O modelo estima uma probabilidade de **{probability:.1%}**.")
+            
+    except Exception as e:
+        st.error(f"Erro ao processar a previsão: {e}")
